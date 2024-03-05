@@ -1,6 +1,6 @@
 import { pool } from '../db/db.js';
 
-export const postModel = async () => { 
+const getPost = async () => { 
   try { 
     const posts = await pool.query('SELECT id , titulo, img, descripcion FROM POSTS')
     return posts.rows;
@@ -9,7 +9,7 @@ export const postModel = async () => {
   }
 }
 
-export const createPostModel = async (titulo, img, descripcion) => { 
+const createNewPost = async (titulo, img, descripcion) => { 
   try { 
     const newPost = await pool.query('INSERT INTO POSTS (titulo, img, descripcion) VALUES ($1, $2, $3) RETURNING *',
     [titulo, img, descripcion])
@@ -18,3 +18,5 @@ export const createPostModel = async (titulo, img, descripcion) => {
     throw new Error(error.message);
   }
 }
+
+export {getPost, createNewPost};

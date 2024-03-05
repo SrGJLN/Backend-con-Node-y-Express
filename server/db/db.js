@@ -1,7 +1,7 @@
 import pg from 'pg';
 import "dotenv/config";
 
-export const pool = new pg.Pool({
+const pool = new pg.Pool({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
@@ -12,3 +12,5 @@ export const pool = new pg.Pool({
 pool.query('SELECT NOW()', (err, res) => { 
   res ? console.log('Database connected') : console.log({err});
 });
+
+export default pool;
