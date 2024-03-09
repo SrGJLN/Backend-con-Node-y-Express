@@ -6,14 +6,14 @@ const getPostModel = async () => {
 }
 
 const createPostModel = async (titulo, img, descripcion) => { 
-    const query = await pool.query('INSERT INTO POSTS (titulo, img, descripcion) VALUES ($1, $2, $3) RETURNING *',
+    const query = await pool.query('INSERT INTO POSTS (titulo, img, descripcion) VALUES ($1, $2, $3, $4) RETURNING *',
     [titulo, img, descripcion])
     return query.rows;
 }
 
-const updatePostModel = async (id) => {
-    const query = await pool.query('UPDATE posts SET likes = COALESCE(likes + $1, $1) WHERE id = $2 RETURNING *',
-    [1, id])
+const updatePostModel = async (id, likes) => {
+    const query = await pool.query('UPDATE posts SET likes = $1 WHERE id = $2 RETURNING *',
+    [likes, id])
     return query.rows;
 }
 
