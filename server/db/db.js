@@ -13,4 +13,4 @@ pool.query('SELECT NOW()', (err, res) => {
   res ? console.log('Database connected') : console.log({err});
 });
 
-export default pool;
+export {pool};

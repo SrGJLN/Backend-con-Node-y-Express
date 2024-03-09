@@ -11,4 +11,4 @@ app.use(express.json());
 app.use(cors());
 app.use('/posts', postRoutes )
 
-app.listen(console.log(`Server on http://localhost:${PORT}`));
+app.listen(`${PORT}`, console.log(`Server on http://localhost:${PORT}`));

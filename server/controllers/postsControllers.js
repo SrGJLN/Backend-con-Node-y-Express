@@ -1,10 +1,13 @@
-import { getPost, createNewPost } from "../model/postsModel.js";
+import { getPostModel, 
+  createPostModel, 
+  updatePostModel, 
+  deletePostModel } from "../model/postsModel.js";
 
-const getAllPosts = async (_, res) => {
+const getPostController = async (_, res) => {
   try {
-    const posts = await getPost();
+    const posts = await getPostModel();
     if (!posts) {
-      res.status(404).send("This entity does not exist");
+      return res.status(404).send({ message: "This entity does not exist" });
   }
     return res.status(200).json(posts);
   } catch (error) {
@@ -12,14 +15,13 @@ const getAllPosts = async (_, res) => {
   }
 };
 
-const addNewPosts = async (req, res) => {
+const createPostController = async (req, res) => {
   try {
     const { titulo, url, descripcion } = req.body;
     if (!titulo || !url || !descripcion) {
-      res.status(400).json({ message: "You should enter all the fields" });
-      return;
+      return res.status(400).json({ message: "You should enter all the fields" });
   }else{    
-    const newPost = await createNewPost(titulo, url, descripcion);
+    const newPost = await createPostModel(titulo, url, descripcion);
     return res.status(200).json(newPost);
   }
   } catch (error) { 
@@ -27,4 +29,30 @@ const addNewPosts = async (req, res) => {
    }
 };
 
-export {getAllPosts, addNewPosts};
+const updatePostController = async (req, res) => {
+  try {
+    const {id} = req.params;
+    if (!id) {
+      return res.status(400).json({ message: "Post not found" });
+  }
+    const updatePost = await updatePostModel(id);
+    return res.status(201).json(updatePost)
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+}
+
+const deletePostController = async (req, res) => {
+  try {
+    const {id} = req.params;
+    if (!id) {
+      return res.status(400).json({ message: "Post not found" });
+  }
+    const deletePost = await deletePostModel(id);
+    return res.status(204).json({ message: "Post deleted" })
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+}
+
+export {getPostController, createPostController, updatePostController, deletePostController};

@@ -1,22 +1,29 @@
 import { pool } from '../db/db.js';
 
-const getPost = async () => { 
-  try { 
-    const posts = await pool.query('SELECT id , titulo, img, descripcion FROM POSTS')
-    return posts.rows;
-  } catch (error) {
-    throw new Error(error.message);
-  }
+const getPostModel = async () => { 
+    const query = await pool.query('SELECT id , titulo, img, descripcion FROM POSTS')
+    return query.rows;
 }
 
-const createNewPost = async (titulo, img, descripcion) => { 
-  try { 
-    const newPost = await pool.query('INSERT INTO POSTS (titulo, img, descripcion) VALUES ($1, $2, $3) RETURNING *',
+const createPostModel = async (titulo, img, descripcion) => { 
+    const query = await pool.query('INSERT INTO POSTS (titulo, img, descripcion) VALUES ($1, $2, $3) RETURNING *',
     [titulo, img, descripcion])
-    return newPost.rows;
-  } catch (error) {
-    throw new Error(error.message);
-  }
+    return query.rows;
 }
 
-export {getPost, createNewPost};
+const updatePostModel = async (id) => {
+    const query = await pool.query('UPDATE posts SET likes = COALESCE(likes + $1, $1) WHERE id = $2 RETURNING *',
+    [1, id])
+    return query.rows;
+}
+
+
+const deletePostModel = async (id) => {
+    const query = await pool.query('DELETE FROM posts WHERE id = $1 RETURNING *',
+  [id])
+  return query.rows;
+};
+
+
+
+export {getPostModel, createPostModel, updatePostModel, deletePostModel};
