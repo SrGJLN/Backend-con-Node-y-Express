@@ -32,14 +32,11 @@ const createPostController = async (req, res) => {
 const updatePostController = async (req, res) => {
   try {
     const {id} = req.params;
-    const {likes} = req.body;
-    console.log(req.body);
     if (!id) {
       return res.status(400).json({ message: "Post not found" });
   }
-    const updatePost = await updatePostModel(id, likes);
-    console.log(req.body);
-    return res.status(201).json(updatePost)
+    const updatePost = await updatePostModel(id);
+    return res.status(201).json(updatePost);
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
